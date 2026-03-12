@@ -95,14 +95,18 @@ function injectModal(templateParam: string | null, apiUrlParam: string | null) {
 
   // Set values
   if (templateParam) {
-    (document.getElementById("manifestPathInput") as HTMLInputElement).value = templateParam;
+    const pathInput = document.getElementById("manifestPathInput") as HTMLInputElement;
     try {
       const decoded = atob(templateParam);
+      pathInput.value = decoded;
+      
       const match = decoded.match(/\/templates\/([^\/]+)\//);
       if (match && match[1]) {
         (document.getElementById("templateNameInput") as HTMLInputElement).value = match[1];
       }
-    } catch(e) {}
+    } catch(e) {
+      pathInput.value = templateParam;
+    }
   }
   
   if (apiUrlParam) {
