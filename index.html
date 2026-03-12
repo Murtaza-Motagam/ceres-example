@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ceres - Custom Document Renderer</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start; /* Align to top */
+        min-height: 100vh;
+      }
+      html {
+        overflow-x: hidden;
+      }
+
+      @media print {
+        html,
+        body {
+          min-height: auto !important;
+          overflow: visible !important;
+        }
+
+        body {
+          padding: 0 !important;
+          margin: 0 !important;
+          background-color: transparent !important;
+          display: block !important;
+          align-items: stretch !important;
+        }
+      }
+
+      .error-message {
+        color: red;
+        text-align: center;
+      }
+
+      .loading-message {
+        text-align: center;
+        color: #555;
+      }
+    </style>
+    <script>
+      if (!window.location.search) {
+        window.location.replace("?devMode=1");
+      }
+    </script>
+  </head>
+  <body>
+    <div id="documentOutput" class="loading-message">
+      Trying to load document...
+    </div>
+    <script>
+      // Minimal bootstrap: Load vendor deps + main renderer
+      Promise.all([
+        fetch("./vendor-manifest.json").then(function (r) {
+          if (!r.ok)
+            throw new Error("Failed to fetch vendor manifest: " + r.status);
+          return r.json();
+        }),
+        fetch("./main-manifest.json").then(function (r) {
+          if (!r.ok)
+            throw new Error("Failed to fetch main manifest: " + r.status);
+          return r.json();
+        }),
+      ])
+        .then(function (results) {
+          var vendorManifest = results[0];
+          var mainManifest = results[1];
+
+          if (
+            !vendorManifest.handlebars ||
+            !vendorManifest.handlebars.js ||
+            !vendorManifest.handlebars.js.trim()
+          ) {
+            throw new Error("Vendor manifest missing handlebars entry");
+          }
+          if (!mainManifest.js || !mainManifest.js.trim()) {
+            throw new Error(
+              "Renderer JS not found in main manifest or empty entry",
+            );
+          }
+
+          // Load Handlebars first (templates depend on window.Handlebars)
+          return new Promise(function (resolve, reject) {
+            var hbScript = document.createElement("script");
+            hbScript.src = "./" + vendorManifest.handlebars.js;
+            hbScript.onload = resolve;
+            hbScript.onerror = function () {
+              reject(new Error("Failed to load Handlebars vendor bundle"));
+            };
+            document.head.appendChild(hbScript);
+          }).then(function () {
+            // Then load the main renderer
+            var script = document.createElement("script");
+            script.src = "./" + mainManifest.js;
+            script.onerror = function () {
+              document.getElementById("documentOutput").innerHTML =
+                "Error: Failed to load renderer script";
+            };
+            document.head.appendChild(script);
+          });
+        })
+        .catch(function (err) {
+          document.getElementById("documentOutput").innerHTML =
+            "Error: " + err.message;
+        });
+    </script>
+  </body>
+</html>

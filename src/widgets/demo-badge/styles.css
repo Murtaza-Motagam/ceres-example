@@ -1,0 +1,18 @@
+.demo-badge {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 9999px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    color: #111827;
+    background: linear-gradient(90deg, #a7f3d0 0%, #93c5fd 100%);
+    border: 1px solid rgb(0 0 0 / 6%);
+    box-shadow: 0 1px 1px rgb(0 0 0 / 8%) inset, 0 1px 2px rgb(0 0 0 / 5%);
+}
+
+@media print {
+    .demo-badge {
+        display: none
+    }
+}

@@ -1,0 +1,8 @@
+node_modules/
+dist/
+public/
+*.log
+.env
+.DS_Store
+webpack.temp.config.js
+coverage/
