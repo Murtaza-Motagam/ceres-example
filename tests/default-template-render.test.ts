@@ -1,7 +1,7 @@
 import HandlebarsRuntime from "handlebars/runtime";
 import sample from "../src/types/sample.json";
 import { normalizeInvoiceTemplateState } from "../src/main/invoiceTemplateNormalization";
-import template from "../src/templates/example-template/template.hbs";
+import template from "../src/templates/default-template/template.hbs";
 
 beforeAll(() => {
   HandlebarsRuntime.registerPartial("DemoBadge", () => "");
@@ -26,7 +26,7 @@ beforeAll(() => {
   );
 });
 
-describe("example-template", () => {
+describe("default-template", () => {
   it("renders using the shared invoice normalization shape", () => {
     const model = normalizeInvoiceTemplateState(sample);
     const html = template(model);

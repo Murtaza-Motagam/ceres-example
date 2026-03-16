@@ -420,6 +420,34 @@ class AssetManifestPlugin {
             return null;
           };
 
+          // Helper to copy samples.json if exists
+          const copySamples = (templateName) => {
+            const srcPath = path.join(
+              __dirname,
+              "src",
+              "templates",
+              templateName,
+              "samples.json"
+            );
+            if (fs.existsSync(srcPath)) {
+              try {
+                const samplesContent = fs.readFileSync(srcPath);
+                const samplesAssetPath = `templates/${templateName}/samples.json`;
+                compilation.emitAsset(
+                  samplesAssetPath,
+                  new RawSource(samplesContent)
+                );
+                return true;
+              } catch (e) {
+                console.warn(
+                  `Failed to copy samples for ${templateName}:`,
+                  e.message
+                );
+              }
+            }
+            return false;
+          };
+
           // Helper to copy thumbnail if exists
           const copyThumbnail = (templateName, version) => {
             const srcPath = path.join(
@@ -479,6 +507,8 @@ class AssetManifestPlugin {
 
                 // Copy thumbnail to version directory
                 const thumbnailPath = copyThumbnail(templateName, version);
+                // Copy samples to root template directory
+                copySamples(templateName);
 
                 // Create versioned manifest structure
                 const assets = {
@@ -556,6 +586,11 @@ class AssetManifestPlugin {
                 templateManifest
               );
             });
+            // Emit templates-list.json (array of template names)
+            emitJSON(
+              "templates-list.json",
+              Object.keys(globalTemplatesManifest).sort()
+            );
           }
 
           // Widgets: per-widget manifest (with version) and a summary manifest mapping
