@@ -1,0 +1,127 @@
+<div class="murtaza-invoice-shell">
+  <aside class="murtaza-sidebar">
+    <div class="brand-block">
+      <h1>{{invoice.invoiceTitle}}</h1>
+      {{#if invoice.invoiceSubTitle}}
+        <p class="subtitle">{{invoice.invoiceSubTitle}}</p>
+      {{/if}}
+      <p class="doc-number">#{{invoice.invoiceNumber}}</p>
+      <p class="status-line">{{> InvoiceStatus invoice }}</p>
+    </div>
+
+    <div class="sidebar-section">
+      <h3>Billed By</h3>
+      <p><strong>{{invoice.billedBy.name}}</strong></p>
+      <p>
+        {{invoice.billedBy.street}}<br />
+        {{invoice.billedBy.city}}, {{invoice.billedBy.state}} {{invoice.billedBy.pincode}}<br />
+        {{invoice.billedBy.country}}
+      </p>
+      {{#if invoice.billedBy.gstin}}
+        <p>GSTIN: {{invoice.billedBy.gstin}}</p>
+      {{/if}}
+    </div>
+
+    <div class="sidebar-section">
+      <h3>Billed To</h3>
+      <p><strong>{{invoice.billedTo.name}}</strong></p>
+      <p>
+        {{invoice.billedTo.street}}<br />
+        {{invoice.billedTo.city}}, {{invoice.billedTo.state}} {{invoice.billedTo.pincode}}<br />
+        {{invoice.billedTo.country}}
+      </p>
+      {{#if invoice.billedTo.gstin}}
+        <p>GSTIN: {{invoice.billedTo.gstin}}</p>
+      {{/if}}
+    </div>
+
+    <div class="sidebar-section">
+      <h3>Dates</h3>
+      <p>Invoice: {{formateShortDateWithOffset invoice.invoiceDate invoice.ownerOffset}}</p>
+      {{#if invoice.dueDate}}
+        <p>Due: {{formateShortDateWithOffset invoice.dueDate invoice.ownerOffset}}</p>
+      {{/if}}
+    </div>
+  </aside>
+
+  <main class="murtaza-main">
+    <section class="summary-cards">
+      <div class="card">
+        <span>Sub Total</span>
+        <strong>{{invoice.customCurrencySymbol}}{{#if invoice.finalTotal.subTotal}}{{invoice.finalTotal.subTotal}}{{else}}{{invoice.subTotal}}{{/if}}</strong>
+      </div>
+      <div class="card">
+        <span>Tax</span>
+        <strong>{{invoice.customCurrencySymbol}}{{invoice.finalTotal.igst}}{{invoice.finalTotal.cgst}}{{invoice.finalTotal.sgst}}</strong>
+      </div>
+      <div class="card total-card">
+        <span>Total</span>
+        <strong>{{invoice.customCurrencySymbol}}{{invoice.finalTotal.total}}</strong>
+      </div>
+    </section>
+
+    <section class="table-wrap">
+      <table class="murtaza-item-table">
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th class="text-right">Qty</th>
+            <th class="text-right">Rate</th>
+            <th class="text-right">Amount</th>
+            <th class="text-right">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each invoice.items}}
+            <tr>
+              <td>
+                <strong>{{name}}</strong>
+                {{#if description}}
+                  <div class="line-description">{{> MarkdownViewer (prepareMarkdownViewerData description) }}</div>
+                {{/if}}
+              </td>
+              <td class="text-right">{{quantity}}</td>
+              <td class="text-right">{{../invoice.customCurrencySymbol}}{{rate}}</td>
+              <td class="text-right">{{../invoice.customCurrencySymbol}}{{amount}}</td>
+              <td class="text-right">{{../invoice.customCurrencySymbol}}{{subTotal}}</td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </section>
+
+    <section class="totals-panel">
+      {{#if invoice.finalTotal.discount}}
+        <p><span>Discount</span><strong>- {{invoice.customCurrencySymbol}}{{invoice.finalTotal.discount}}</strong></p>
+      {{/if}}
+      {{#if invoice.finalTotal.igst}}
+        <p><span>IGST</span><strong>{{invoice.customCurrencySymbol}}{{invoice.finalTotal.igst}}</strong></p>
+      {{/if}}
+      {{#if invoice.finalTotal.cgst}}
+        <p><span>CGST</span><strong>{{invoice.customCurrencySymbol}}{{invoice.finalTotal.cgst}}</strong></p>
+      {{/if}}
+      {{#if invoice.finalTotal.sgst}}
+        <p><span>{{#if mapped.visibility.isUtgst}}UTGST{{else}}SGST{{/if}}</span><strong>{{invoice.customCurrencySymbol}}{{invoice.finalTotal.sgst}}</strong></p>
+      {{/if}}
+      <p class="grand-total"><span>Grand Total</span><strong>{{invoice.customCurrencySymbol}}{{invoice.finalTotal.total}}</strong></p>
+    </section>
+
+    {{#if invoice.notes}}
+      <section class="notes-area">
+        <h3>Notes</h3>
+        {{> MarkdownViewer (prepareMarkdownViewerData invoice.notes) }}
+      </section>
+    {{/if}}
+
+    {{#if invoice.terms.0.terms.length}}
+      <section class="terms-area">
+        <h3>Terms & Conditions</h3>
+        <ul>
+          {{#each invoice.terms.0.terms}}
+            <li>{{this}}</li>
+          {{/each}}
+        </ul>
+      </section>
+    {{/if}}
+  </main>
+</div>

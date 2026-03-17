@@ -1,0 +1,189 @@
+.murtaza-invoice-shell {
+  font-family: var(--ceres-font-family, Inter, Arial, sans-serif);
+  color: var(--ceres-primary-color, #1f2937);
+  background: var(--ceres-primary-background, #ffffff);
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  min-height: 100%;
+}
+
+.murtaza-sidebar {
+  background: var(--ceres-secondary-background, #f8fafc);
+  border-right: 1px solid #e5e7eb;
+  padding: 24px 20px;
+}
+
+.brand-block h1 {
+  margin: 0;
+  font-size: 24px;
+  line-height: 1.2;
+}
+
+.subtitle {
+  margin: 8px 0 0;
+  color: var(--ceres-secondary-color, #6b7280);
+}
+
+.doc-number {
+  margin: 14px 0 4px;
+  font-weight: 700;
+}
+
+.status-line {
+  margin: 0;
+}
+
+.sidebar-section {
+  margin-top: 24px;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.sidebar-section h3 {
+  margin: 0 0 8px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ceres-secondary-color, #6b7280);
+}
+
+.sidebar-section p {
+  margin: 0 0 8px;
+}
+
+.murtaza-main {
+  padding: 24px;
+}
+
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.card {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 12px;
+  background: #fff;
+}
+
+.card span {
+  display: block;
+  font-size: 12px;
+  color: var(--ceres-secondary-color, #6b7280);
+  margin-bottom: 6px;
+}
+
+.card strong {
+  font-size: 16px;
+}
+
+.total-card {
+  background: #111827;
+  color: #fff;
+  border-color: #111827;
+}
+
+.total-card span {
+  color: #cbd5e1;
+}
+
+.table-wrap {
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+}
+
+.murtaza-item-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.murtaza-item-table thead th {
+  background: #f3f4f6;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  text-align: left;
+  padding: 10px;
+}
+
+.murtaza-item-table td {
+  padding: 10px;
+  border-top: 1px solid #f1f5f9;
+  vertical-align: top;
+}
+
+.line-description {
+  margin-top: 6px;
+  color: var(--ceres-secondary-color, #6b7280);
+  font-size: 12px;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.totals-panel {
+  width: 320px;
+  margin-left: auto;
+  margin-top: 16px;
+  font-size: 13px;
+}
+
+.totals-panel p {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  padding: 8px 0;
+  border-bottom: 1px dashed #e2e8f0;
+}
+
+.totals-panel .grand-total {
+  border-bottom: 0;
+  font-size: 16px;
+  font-weight: 700;
+  padding-top: 10px;
+}
+
+.notes-area,
+.terms-area {
+  margin-top: 18px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 14px;
+}
+
+.notes-area h3,
+.terms-area h3 {
+  margin: 0 0 8px;
+  font-size: 14px;
+}
+
+.terms-area ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+@media print {
+  .murtaza-invoice-shell {
+    display: block;
+  }
+
+  .murtaza-sidebar {
+    border-right: 0;
+    border-bottom: 1px solid #e5e7eb;
+    page-break-inside: avoid;
+  }
+
+  .murtaza-main {
+    padding: 16px;
+  }
+
+  .summary-cards {
+    gap: 8px;
+  }
+}
