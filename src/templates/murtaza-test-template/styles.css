@@ -10,7 +10,7 @@
 .murtaza-sidebar {
   background: var(--ceres-secondary-background, #f8fafc);
   border-right: 1px solid #e5e7eb;
-  padding: 24px 20px;
+  padding: 24px 21px;
 }
 
 .brand-block h1 {
